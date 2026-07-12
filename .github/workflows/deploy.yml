@@ -23,8 +23,6 @@ jobs:
 
       - name: Confirm S3 access
         run: aws s3 ls "s3://${{ vars.S3_BUCKET }}"
-        
-      - name: Test S3 write access
-        run: |
-          echo "GitHub Actions write test" > github-actions-test.txt
-          aws s3 cp github-actions-test.txt "s3://${{ vars.S3_BUCKET }}/github-actions-test.txt"
+
+      - name: Remove temporary test file
+        run: aws s3 rm "s3://${{ vars.S3_BUCKET }}/github-actions-test.txt"
