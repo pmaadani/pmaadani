@@ -31,7 +31,7 @@ jobs:
         run: |
           aws s3 sync . "s3://${{ vars.S3_BUCKET }}" \
             --delete \
-            --dryrun \
             --exclude ".git/*" \
             --exclude ".github/*" \
-            --exclude "backup/*"
+            --exclude "backup/*" \
+            --exclude ".gitignore"
