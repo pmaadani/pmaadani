@@ -20,3 +20,6 @@ jobs:
 
       - name: Confirm AWS identity
         run: aws sts get-caller-identity
+
+      - name: Confirm S3 access
+        run: aws s3 ls "s3://${{ vars.S3_BUCKET }}"
