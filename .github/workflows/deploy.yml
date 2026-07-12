@@ -1,6 +1,10 @@
 name: Test AWS OIDC
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
 
 permissions:
