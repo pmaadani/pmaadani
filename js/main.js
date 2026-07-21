@@ -1,6 +1,6 @@
-import { lines } from './content.js';
-import { createTerminalTyper } from './terminal.js';
-import { createIntroAnimation } from './intro.js';
+import { lines } from './data/content.js';
+import { createTerminalTyper } from './modules/terminal.js';
+import { createIntroAnimation } from './modules/intro.js';
 
 const body = document.body;
 const intro = document.getElementById('intro');
