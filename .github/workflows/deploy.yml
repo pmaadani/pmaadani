@@ -1,4 +1,5 @@
-name: Deploy Personal Website
+name: Deploy React Website
+
 on:
   push:
     branches:
@@ -18,23 +19,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: react-app/package-lock.json
+
+      - name: Install dependencies
+        working-directory: react-app
+        run: npm ci
+
+      - name: Run ESLint
+        working-directory: react-app
+        run: npm run lint
+
+      - name: Build React website
+        working-directory: react-app
+        run: npm run build
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ vars.AWS_ROLE_ARN }}
           aws-region: ${{ vars.AWS_REGION }}
 
-      - name: Confirm AWS identity
-        run: aws sts get-caller-identity
-
-      - name: Confirm S3 access
-        run: aws s3 ls "s3://${{ vars.S3_BUCKET }}"
-
-      - name: Preview S3 deployment
+      - name: Deploy React build to S3
         run: |
-          aws s3 sync . "s3://${{ vars.S3_BUCKET }}" \
-            --delete \
-            --exclude ".git/*" \
-            --exclude ".github/*" \
-            --exclude "backup/*" \
-            --exclude ".gitignore"
+          aws s3 sync react-app/dist "s3://${{ vars.S3_BUCKET }}" \
+            --delete
